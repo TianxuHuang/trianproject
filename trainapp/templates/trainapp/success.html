@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作成功</title>
+    <style>
+        /* 基础样式 - 保持科技蓝风格统一 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 容器样式 - 与其他页面保持一致 */
+        .success-container {
+            background-color: white;
+            padding: 2.5rem 4rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* 成功图标 - 使用科技蓝风格 */
+        .success-icon {
+            font-size: 2rem;
+            color: #165DFF; /* 科技蓝主色 */
+            margin-bottom: 1rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* 标题样式 - 与其他页面统一 */
+        h1 {
+            color: #165DFF;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #165DFF, transparent);
+        }
+
+        /* 文本样式 */
+        .success-message {
+            color: #333;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: #f5f9ff;
+            border-left: 4px solid #165DFF;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        /* 按钮样式 - 统一使用科技蓝按钮 */
+        .btn-home {
+            display: inline-block;
+            background-color: #165DFF;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .btn-home:hover {
+            background-color: #0e42d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 装饰性分隔线 - 保持统一 */
+        .decorative-pattern {
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #165DFF, transparent);
+            margin: 2rem 0;
+        }
+
+        /* 版权信息 - 统一格式 */
+        .copyright {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">✓操作成功</div>
+            
+        <div class="success-message">
+            <p>您的请求已成功处理。</p>
+          </div>
+        
+        <a href="{% url 'index' %}" class="btn-home">返回首页</a>
+         
+        <div class="decorative-pattern"></div>
+        
+        <div class="copyright">
+            © 2025 人工智能与大数据学院AI应用研发中心 版权所有
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>训练任务提交成功</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* 容器样式 */
+        .success-container {
+            background-color: white;
+            padding: 2.5rem 4rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        /* 成功图标 */
+        .success-icon {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        /* 文本样式 */
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* 任务详情样式 */
+        .task-details {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .task-details p {
+            margin: 0.5rem 0;
+        }
+
+        .task-details strong {
+            color: #2c3e50;
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        /* 链接按钮样式 */
+        .back-link {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>训练任务提交成功！</h1>
+        <p>您的模型训练任务已成功提交到系统，以下是任务详情：</p>
+
+        <!-- 显示传递的参数 -->
+        <div class="task-details">
+            <p><strong>YOLO版本：</strong> {{ yolo_version }}</p>
+            <p><strong>模型大小：</strong> {{ model_size }}</p>
+            <p><strong>数据集路径：</strong> {{ dataset_path }}</p>
+            <p><strong>训练轮数：</strong> {{ epochs }}</p>
+            <p><strong>批次大小：</strong> {{ batch_size }}</p>
+            <p><strong>提交时间：</strong> {{ train_time }}</p>
+        </div>
+
+        <a href="{% url 'train_form' %}" class="back-link">返回继续训练</a>
+    </div>
+</body>
+</html>

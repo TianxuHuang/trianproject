@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机器学习及模型训练教学平台</title>
+    <style>
+        /* 基础样式 - 科技蓝风格 */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif; /* 科技感无衬线字体 */
+            background-color: #f0f7ff; /* 浅蓝背景 */
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            padding: 15px;
+        }
+
+        /* 容器样式 */
+        .home-container {
+            background-color: white;
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(22, 93, 255, 0.15); /* 蓝色阴影 */
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            border: 1px solid #e6f0ff;
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #165DFF; /* 科技蓝主色调 */
+            margin-bottom: 0.8rem;
+            margin-top: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 70%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #165DFF, transparent);
+        }
+
+        /* 副标题样式 */
+        .subtitle {
+            color: #4E5969; /* 深灰文字 */
+            margin-bottom: 1.5rem;
+            margin-top: 0;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* 链接容器 */
+        .links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* 链接按钮样式 - 科技蓝风格 */
+        .nav-link {
+            display: inline-block;
+            padding: 1.2rem 1rem;
+            background-color: #f0f7ff; /* 浅蓝背景 */
+            color: #165DFF; /* 蓝色文字 */
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(22, 93, 255, 0.1);
+            border: 1px solid #e6f0ff;
+        }
+
+        .nav-link:hover {
+            background-color: #165DFF;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.25);
+        }
+
+        .nav-link .link-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .nav-link .link-desc {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* 科技感分隔线 */
+        .decorative-pattern {
+            margin: 1rem 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #165DFF, transparent);
+            border-radius: 2px;
+        }
+
+        /* 版权信息样式 */
+        .copyright-info {
+            margin-top: 2rem;
+            padding-top: 1rem;
+        }
+
+        .copyright-info p {
+            color: #6B7785;
+            font-size: 0.9rem;
+            margin: 0.8rem 0 0 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <h1>机器学习及模型训练教学平台</h1>
+        <div class="decorative-pattern"></div>
+        <p class="subtitle">一站式模型训练与管理工具，支持多种模型版本和自定义数据集</p>
+
+        <div class="links-container">            
+
+            <a href="{% url 'version_info' %}" class="nav-link">
+                <span class="link-title">运行环境检测</span>
+                <span class="link-desc">查看系统环境和依赖库版本</span>
+            </a>
+
+             <a href="{% url 'train_form' %}" class="nav-link">
+                <span class="link-title">模型训练</span>
+                <span class="link-desc">配置参数并提交新的训练任务</span>
+            </a>
+
+            <a href="{% url 'export_model' %}" class="nav-link">
+                <span class="link-title">模型导出</span>
+                <span class="link-desc">已训练模型和导出其他格式</span>
+            </a>
+
+            <a href="{% url 'about' %}" class="nav-link">
+                <span class="link-title">帮助文档</span>
+                <span class="link-desc">查看使用指南和常见问题</span>
+            </a>
+        </div>
+
+        <!-- 版权信息 -->
+        <div class="copyright-info">
+            <div class="decorative-pattern"></div>
+            <p>© 2025 人工智能与大数据学院AI应用研发中心 版权所有</p>
+        </div>
+    </div>
+</body>
+</html>

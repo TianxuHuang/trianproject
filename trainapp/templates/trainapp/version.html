@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运行环境检测</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; background-color: #f8f9fa; }
+        .container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .version-info { margin: 20px 0; padding: 15px; background-color: #e9f5ff; border-radius: 5px; }
+        .package-list { margin-top: 20px; }
+        .package-item { display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #eee; }
+        .package-item:nth-child(even) { background-color: #f8f9fa; }
+        .package-name { font-weight: 500; }
+        .package-version { color: #28a745; }
+        .missing { color: #dc3545; }
+        .timestamp { color: #6c757d; font-size: 0.9em; margin-top: 5px; }
+        /* 新增表格样式 */
+        .env-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        .env-table th, .env-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        .env-table th { background-color: #007bff; color: white; font-weight: 500; }
+        .env-table tr:nth-child(even) { background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>平台依赖版本信息</h1>
+            
+        </div>
+        <div class="timestamp">最后更新: {{ current_time }}
+            <a href="{% url 'index' %}" class="btn btn-outline-primary">返回首页</a>
+        </div>
+        
+        <div class="version-info">
+            <h2>Python 版本</h2>
+            <p>{{ python_version }}</p>
+            
+            <h2>运行环境</h2>
+            <table class="env-table">
+                <thead>
+                    <tr>
+                        <th>依赖库</th>
+                        <th>版本要求</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>django</td><td>>=4.0</td></tr>
+                    <tr><td>ultralytics</td><td>>=8.0</td></tr>
+                    <tr><td>torch</td><td>>=2.0</td></tr>
+                    <tr><td>numpy</td><td>>=1.21</td></tr>
+                    <tr><td>pillow</td><td>>=9.0</td></tr>
+                    <tr><td>openvino</td><td>>=2023.0</td></tr>
+                    <tr><td>onnx</td><td>>=1.14.0</td></tr>
+                </tbody>
+            </table>
+            </div>
+        
+        <div class="package-list">
+            <h2>已安装核心依赖库 ({{ packages|length }})</h2>
+            {% for package in packages %}
+            <div class="package-item">
+                <span class="package-name">{{ package.name }}</span>
+                <span class="package-version {% if package.status == 'missing' %}missing{% endif %}">{{ package.version }}</span>
+            </div>
+            {% empty %}
+            <p>未检测到依赖库信息</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

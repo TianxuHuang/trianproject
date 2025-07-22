@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型训练</title>
+    <!-- 引入Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', '微软雅黑', sans-serif;
+            background-color: #f0f7ff;
+            color: #333;
+            min-height: 100vh; /* 确保页面占满视口高度 */
+            display: flex; /* 使用flex布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            margin: 0; /* 移除默认外边距 */
+            padding: 20px; /* 添加内边距防止内容贴边 */
+        }
+        .form-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.15);
+            max-width: 600px; /* 限制最大宽度 */
+            width: 100%; /* 响应式宽度 */
+            margin: 0 auto; /* 水平居中 */
+            border: 1px solid #cce5ff;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #4E5969;
+            margin-bottom: 0.3rem; /* 减小标签底部间距 */
+        }
+        /* 科技蓝按钮样式 */
+        .btn-primary {
+            background-color: #165DFF;
+            border-color: #165DFF;
+            padding: 8px 0; /* 减小按钮内边距 */
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0E4CD1;
+            border-color: #0E4CD1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.25);
+        }
+        /* 标题样式 */
+        h3 {
+            color: #165DFF;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px; /* 减小标题下内边距 */
+            margin-bottom: 1.2rem; /* 减小标题底部间距 */
+            font-size: 1.5rem; /* 减小标题字体大小 */
+        }
+        h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 70%;
+            height: 2px; /* 减小分隔线高度 */
+            background: linear-gradient(to right, transparent, #165DFF, transparent);
+        }
+        /* 表单控件样式优化 */
+        select, input {
+            border-color: #e6f0ff;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+            padding: 0.5rem; /* 减小输入框内边距 */
+        }
+        select:focus, input:focus {
+            border-color: #165DFF;
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h3 class="text-center mb-12">模型训练</h3>
+            <form method="post" action="{% url 'train_form' %}">
+                {% csrf_token %}
+                
+                <div class="mb-2"> <!-- 将mb-3改为mb-2减小间距 -->
+                    <label for="{{ form.yolo_version.id_for_label }}" class="form-label">{{ form.yolo_version.label }}</label>
+                    {{ form.yolo_version }}
+                </div>
+                
+                <div class="mb-2">
+                    <label for="{{ form.model_size.id_for_label }}" class="form-label">{{ form.model_size.label }}</label>
+                    {{ form.model_size }}
+                </div>
+                
+                <div class="mb-2">
+                    <label for="{{ form.display_option.id_for_label }}" class="form-label">{{ form.display_option.label }}</label>
+                    {{ form.display_option }}
+                </div>
+                
+                <div class="mb-2">
+                    <label for="{{ form.dataset_name.id_for_label }}" class="form-label">{{ form.dataset_name.label }}</label>
+                        {{ form.dataset_name }}
+                </div>
+                <div class="mb-2">
+                    <label for="{{ form.epochs.id_for_label }}" class="form-label">{{ form.epochs.label }}</label>
+                    {{ form.epochs }}
+                </div>  
+                <div class="mb-3"> <!-- 最后一个表单组保留稍大间距 -->
+                    <label for="{{ form.batch.id_for_label }}" class="form-label">{{ form.batch.label }}</label>
+                    {{ form.batch }}
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <a href="{% url 'index' %}" class="btn btn-outline-primary">返回首页</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 引入Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

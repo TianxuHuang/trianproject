@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平台说明 - 机器学习及模型训练教学平台</title>
+    <style>
+        /* 基础样式 - 科技蓝风格 */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f7ff;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            padding: 15px;
+        }
+
+        /* 容器样式 */
+        .about-container {
+            background-color: white;
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(22, 93, 255, 0.15);
+            max-width: 900px;
+            width: 100%;
+            /*删除 max-height 和 overflow-y 属性，使用浏览器默认滚动*/
+            border: 1px solid #e6f0ff;
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #165DFF;
+            margin-bottom: 1.5rem;
+            margin-top: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 70%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #165DFF, transparent);
+        }
+
+        h2 {
+            color: #165DFF;
+            font-size: 1.3rem;
+            margin-top: 1.8rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid #165DFF;
+        }
+
+        /* 内容样式 */
+        .content-section {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .content-section p {
+            margin: 0.8rem 0;
+            color: #4E5969;
+        }
+
+        /* 列表样式 */
+        .feature-list {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0 1.5rem 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 0.6rem;
+            color: #4E5969;
+            position: relative;
+            padding-left: 0.5rem;
+        }
+
+        .feature-list li:before {
+            content: '•';
+            color: #165DFF;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* 代码块样式 */
+        .code-block {
+            background-color: #f5f8ff;
+            border-left: 3px solid #165DFF;
+            padding: 0.8rem 1rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            color: #333;
+            overflow-x: auto;
+        }
+
+        /* 卡片容器 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        /* 卡片样式 */
+        .feature-card {
+            background-color: #f9fbff;
+            border: 1px solid #e6f0ff;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(22, 93, 255, 0.1);
+        }
+
+        .feature-card h3 {
+            color: #165DFF;
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* 分隔线 */
+        .decorative-pattern {
+            margin: 1.5rem 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #165DFF, transparent);
+            border-radius: 2px;
+        }
+
+        /* 版权信息 */
+        .copyright-info {
+            margin-top: 2rem;
+            padding-top: 1rem;
+        }
+
+        .copyright-info p {
+            color: #6B7785;
+            font-size: 0.9rem;
+            margin: 0.8rem 0 0 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="about-container">
+        <h1>平台说明文档</h1>
+        <div class="content-section">
+            <p>本页面提供平台的详细信息，包括环境要求、支持的模型与数据集以及使用方法。 <a href="{% url 'index' %}" class="btn btn-outline-primary">返回首页</a></p>
+        </div>
+
+        <div class="decorative-pattern"></div>
+
+        <h2>环境要求</h2>
+        <div class="content-section">
+            <p>运行平台需要以下环境配置：</p>
+            <ul class="feature-list">
+                <li><strong>Python 版本：</strong>3.10.11</li>
+                <li>其他依赖库请参考项目中的 <code>requirements.txt</code> 文件</li>
+            </ul>
+        </div>
+
+        <h2>支持的模型</h2>
+        <div class="content-section">
+            <p>本平台支持以下YOLO系列模型：</p>
+            <div class="cards-container">
+                <div class="feature-card">
+                    <h3>YOLOv8</h3>
+                    <p>支持n、s、m、l、x等不同尺寸模型</p>
+                </div>
+                <div class="feature-card">
+                    <h3>YOLOv10</h3>
+                    <p>支持n、s、m、l、x等不同尺寸模型</p>
+                </div>
+                <div class="feature-card">
+                    <h3>YOLO11</h3>
+                    <p>支持n、s、m、l、x等不同尺寸模型</p>
+                </div>
+                <div class="feature-card">
+                    <h3>YOLO12</h3>
+                    <p>支持n、s、m、l、x等不同尺寸模型</p>
+                </div>
+            </div>
+            <p><strong>注意：</strong></p>
+            <p>1.由于YOLOv13使用不同的Ultralytics版本，目前暂不支持。</p>
+            <p>2.添加新模型：将模型文件(.pt)放到项目下的 <strong>yolo/对应模型目录</strong> 即可。</p>
+        </div>
+
+        <h2>支持的数据集</h2>
+        <div class="content-section">
+            <p>本平台已支持以下数据集：</p>
+            <div class="cards-container">
+                 <div class="feature-card">
+                    <h3>StudentBehavior课堂行为</h3>
+                    <p>学生课堂行为数据集</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Crack道路坏道</h3>
+                    <p>道路裂缝检测数据集</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Expression情绪</h3>
+                    <p>人脸情绪识别数据集</p>
+                </div>
+                <div class="feature-card">
+                    <h3>HardHat安全帽</h3>
+                    <p>安全帽佩戴检测数据集</p>
+                </div>
+                <div class="feature-card">
+                    <h3>TrafficSign交通灯</h3>
+                    <p>交通标志识别数据集</p>
+                </div>
+                  <div class="feature-card">
+                    <h3>Tomato西红柿</h3>
+                    <p>西红柿成熟度数据集</p>
+                </div>
+            </div>
+            <p>添加新数据集：将数据集解压到项目下的 <code>datasets</code> 目录下即可。</p>
+        </div>
+
+        <h2>使用方法</h2>
+        <div class="content-section">
+            <p>启动项目步骤：</p>
+            <ol class="feature-list" style="list-style-type: decimal;
+                padding-left: 1.8rem;">
+                <li>确保已安装所有依赖库</li>
+                <li>双击项目根目录下的 <code>start_server_and_browser.bat</code> 文件</li>
+                <li>系统将自动启动服务器并打开浏览器访问平台</li>
+            </ol>
+            <div class="code-block">
+双击项目下的start_server_and_browser.bat来启动服务器，并会自动打开浏览器。
+            </div>
+        </div>
+
+        <div class="decorative-pattern"></div>
+
+        <div class="copyright-info">
+            <p>© 2025 人工智能与大数据学院AI应用研发中心 版权所有</p>
+        </div>
+    </div>
+</body>
+</html>
