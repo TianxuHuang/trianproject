@@ -1,4 +1,10 @@
-datasets/*
-!datasets/
-yolo/*
-!yolo/
+yolo11/
+yolo12/
+yolov8/
+yolov10/
+Crack/
+Expression/
+HardHat/
+StudentBehavior/
+Tomato/
+TrafficSign/
