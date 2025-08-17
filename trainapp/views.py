@@ -10,6 +10,8 @@ import sys
 import pkg_resources  # 新增导入，用于获取包信息
 import os  # 确保已导入os模块
 import torch
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 BASE_DIR = settings.BASE_DIR
 
@@ -154,3 +156,25 @@ def export_model(request):
         'export_formats': [('onnx', 'ONNX'), ('openvino', 'OpenVINO'), ('engine', 'TensorRT Engine')]
     }
     return render(request, 'trainapp/export.html', context)
+
+def login(request):
+    if request.method == 'POST':        
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username=='13978769766' and password=='gxcvu9527':
+            request.session['is_logged_in'] = True
+            request.session['username'] = username           
+            return render(request, 'trainapp/index.html')
+        else:
+            context={
+                'error':'用户名或密码错误'
+            }
+            return render(request, 'trainapp/login.html', context)
+    context={}
+    return render(request, 'trainapp/login.html', context)
+
+def logout(request):
+    # 清除用户登录状态
+    request.session.flush()
+    return HttpResponseRedirect(reverse('trainapp:login'))
+

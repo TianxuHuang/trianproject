@@ -83,7 +83,7 @@
     <div class="container">
         <div class="form-container">
             <h3 class="text-center mb-12">模型训练</h3>
-            <form method="post" action="{% url 'train_form' %}">
+            <form method="post" action="{% url 'trainapp:train_form' %}">
                 {% csrf_token %}
                 
                 <div class="mb-2"> <!-- 将mb-3改为mb-2减小间距 -->
@@ -115,7 +115,7 @@
                 </div>
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary">提交</button>
-                    <a href="{% url 'index' %}" class="btn btn-outline-primary">返回首页</a>
+                    <a href="{% url 'trainapp:index' %}" class="btn btn-outline-primary">返回首页</a>
                 </div>
             </form>
         </div>
