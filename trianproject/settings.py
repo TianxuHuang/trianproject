@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-yi52ofw92@yc!ct18nh(!w^$hw(0=vx!x!%!nj1txams+fwya#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -121,3 +121,4 @@ STATIC_URL = 'static/'
 # Default primary key field type
     # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CSRF_TRUSTED_ORIGINS=['https://train.gxcvuedu.com',]
