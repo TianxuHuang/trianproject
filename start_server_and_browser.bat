@@ -14,6 +14,6 @@ timeout /t 8 >nul
 REM 等待服务器启动，这里等待 5 秒，你可以根据需要调整
 
 echo Opening browser...
-start http://127.0.0.1:8000/train/index
+start http://127.0.0.1:8000
 
 echo Script finished.
