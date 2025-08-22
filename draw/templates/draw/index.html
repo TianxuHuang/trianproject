@@ -1,0 +1,557 @@
+<!-- 修复整个index.html文件，将JavaScript代码正确放置在script标签内，并修复HTML结构 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手部追踪画图应用</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', '微软雅黑', sans-serif;
+            background-color: #f0f7ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-title {
+            color: #165DFF;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .canvas-section {
+            flex: 1;
+            min-width: 600px;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        #videoElement {
+            width: 100%;
+            height: auto;
+            background-color: #000;
+        }
+        #drawingCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        #overlayCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .controls {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #165DFF;
+            border-color: #165DFF;
+            margin: 0 10px;
+            font-size: 13px;
+        }
+        .btn-primary:hover {
+            background-color: #0E4CD1;
+            border-color: #0E4CD1;
+        }
+        .status-info {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #165DFF;
+            font-size: 12px;
+        }
+        
+        /* 右侧控制面板样式 */
+        .control-panel {
+            width: 300px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.15);
+            height: fit-content;
+        }
+        
+        /* 颜色选择器样式 */
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 5px; /* 间距缩小2倍 */
+        }
+        .color-option {
+            width: 20px; /* 尺寸缩小2倍 */
+            height: 20px; /* 尺寸缩小2倍 */
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1.5px solid transparent; /* 边框缩小2倍 */
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 阴影缩小 */
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+        .color-option.active {
+            border-color: #333;
+            box-shadow: 0 0 0 1px white, 0 1px 5px rgba(0, 0, 0, 0.2); /* 阴影缩小 */
+        }
+        
+        /* 线条宽度选择器样式 */
+        .width-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+            gap: 5px; /* 间距缩小2倍 */
+        }
+        .width-option {
+            width: 100%;
+            padding: 5px 8px; /* 内边距缩小约2倍 */
+            cursor: pointer;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6; /* 边框缩小2倍 */
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-size: 0.85rem; /* 字体缩小 */
+        }
+        .width-option:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+        .width-option.active {
+            background-color: #165DFF;
+            border-color: #165DFF;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 选项组标题样式 */
+        .option-group-title {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #495057;
+            text-align: center;
+            font-size: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        /* 第一个选项组标题不需要上边距 */
+        .control-panel .option-group-title:first-child {
+            margin-top: 0;
+        }
+        
+        /* 使用说明样式 */
+        .instructions {
+            margin-top: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+        .instructions p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions p strong {
+            color: #165DFF;
+            margin-right: 8px;
+            min-width: 20px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            .control-panel {
+                width: 100%;
+                max-width: 600px;
+                margin-top: 20px;
+            }
+            .canvas-section {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="app-title">手部追踪画图应用</h3>
+        <div class="main-content">
+            <!-- 左侧：画布和主要控制按钮 -->
+            <div class="canvas-section">
+                <div class="canvas-container">
+                    <video id="videoElement" autoplay muted></video>
+                    <canvas id="drawingCanvas"></canvas>
+                    <canvas id="overlayCanvas"></canvas>
+                </div>
+                <div class="controls">
+                    <button id="startBtn" class="btn btn-primary">开始追踪</button>
+                    <button id="stopBtn" class="btn btn-primary" disabled>停止追踪</button>
+                    <button id="clearBtn" class="btn btn-primary">清除画布</button>
+                    <button id="saveBtn" class="btn btn-primary">保存图片</button>
+                </div>
+                <div class="status-info" id="statusText">等待手部检测...</div>
+            </div>
+            
+            <!-- 右侧：控制面板 -->
+            <div class="control-panel">
+                <!-- 颜色选择器 -->
+                <div class="option-group-title">选择颜色</div>
+                <div class="color-options" id="colorOptions">
+                    <div class="color-option active" data-color="#FF0000" style="background-color: #FF0000;"></div>
+                    <div class="color-option" data-color="#00FF00" style="background-color: #00FF00;"></div>
+                    <div class="color-option" data-color="#0000FF" style="background-color: #0000FF;"></div>
+                    <div class="color-option" data-color="#FFFF00" style="background-color: #FFFF00;"></div>
+                    <div class="color-option" data-color="#FF00FF" style="background-color: #FF00FF;"></div>
+                    <div class="color-option" data-color="#00FFFF" style="background-color: #00FFFF;"></div>
+                    <div class="color-option" data-color="#000000" style="background-color: #000000;"></div>
+                </div>
+                
+                <!-- 线条宽度选择器 -->
+                <div class="option-group-title">选择线条宽度</div>
+                <div class="width-options" id="widthOptions">
+                    <div class="width-option" data-width="1">细</div>
+                    <div class="width-option active" data-width="3">中</div>
+                    <div class="width-option" data-width="5">粗</div>
+                    <div class="width-option" data-width="10">很粗</div>
+                </div>
+                
+                <!-- 使用说明 -->
+                <div class="option-group-title">使用说明</div>
+                <div class="instructions">
+                    <p><strong>1.</strong> 点击"开始追踪"按钮</p>
+                    <p><strong>2.</strong> 将手放在摄像头前，显示手部骨架后，食指和拇指合并即可开始绘图</p>
+                    <p><strong>3.</strong> 分开食指和拇指可以停止绘图</p>
+                    <p><strong>4.</strong> 选择不同的颜色和线条宽度来创作</p>
+                    <p><strong>5.</strong> 点击"清除画布"可以重新开始</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入MediaPipe库 -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 获取DOM元素
+        const videoElement = document.getElementById('videoElement');
+        const drawingCanvas = document.getElementById('drawingCanvas');
+        const overlayCanvas = document.getElementById('overlayCanvas');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const widthOptions = document.querySelectorAll('.width-option');
+        const statusText = document.getElementById('statusText');
+        
+        const ctx = drawingCanvas.getContext('2d');
+        const overlayCtx = overlayCanvas.getContext('2d');
+
+        // 设置画布尺寸
+        function setCanvasSize() {
+            drawingCanvas.width = videoElement.videoWidth;
+            drawingCanvas.height = videoElement.videoHeight;
+            overlayCanvas.width = videoElement.videoWidth;
+            overlayCanvas.height = videoElement.videoHeight;
+        }
+
+        // 初始化手部追踪
+        const hands = new Hands({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+            }
+        });
+
+        // 配置手部追踪
+        hands.setOptions({
+            maxNumHands: 1,
+            modelComplexity: 1,
+            minDetectionConfidence: 0.8,  // 提高检测置信度阈值
+            minTrackingConfidence: 0.8    // 提高跟踪置信度阈值
+        });
+
+        // 变量初始化
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let isTracking = false;
+        let camera = null;
+        let handDetected = false;
+        let currentColor = '#FF0000'; // 默认红色
+        let currentWidth = 3; // 默认中等宽度
+
+        // 手部追踪结果处理
+        hands.onResults((results) => {
+            if (!isTracking) return;
+
+            // 清除覆盖层画布
+            overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+            // 重置手部检测状态
+            handDetected = false;
+            statusText.textContent = "等待手部检测...";
+
+            // 检测到手部
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                const handLandmarks = results.multiHandLandmarks[0];
+                handDetected = true;
+                statusText.textContent = "手部已检测到，请合并食指和拇指开始绘图";
+                
+                // 在覆盖层画布上绘制手部地标和连线，这样不会干扰绘图
+                drawHandLandmarks(handLandmarks);
+                
+                // 获取食指指尖和拇指指尖坐标
+                const indexFingerTip = handLandmarks[8];  // 食指指尖
+                const thumbTip = handLandmarks[4];       // 拇指指尖
+                
+                const indexX = indexFingerTip.x * drawingCanvas.width;
+                const indexY = indexFingerTip.y * drawingCanvas.height;
+                const thumbX = thumbTip.x * drawingCanvas.width;
+                const thumbY = thumbTip.y * drawingCanvas.height;
+                
+                // 计算食指和拇指指尖之间的距离
+                const distance = Math.hypot(indexX - thumbX, indexY - thumbY);
+                
+                // 定义合并阈值（根据屏幕尺寸调整）
+                const pinchThreshold = Math.min(drawingCanvas.width, drawingCanvas.height) * 0.05;
+                
+                // 如果食指和拇指合并（距离小于阈值），开始绘图
+                if (distance < pinchThreshold) {
+                    statusText.textContent = "正在绘图...";
+                    if (!isDrawing) {
+                        isDrawing = true;
+                        lastX = indexX;
+                        lastY = indexY;
+                    } else {
+                        // 绘制线条
+                        ctx.beginPath();
+                        ctx.moveTo(lastX, lastY);
+                        ctx.lineTo(indexX, indexY);
+                        ctx.strokeStyle = currentColor;
+                        ctx.lineWidth = currentWidth;
+                        ctx.lineCap = 'round';
+                        ctx.lineJoin = 'round';
+                        ctx.stroke();
+
+                        lastX = indexX;
+                        lastY = indexY;
+                    }
+                } else {
+                    isDrawing = false;
+                }
+            }
+        });
+
+        // 在覆盖层上绘制手部地标和连线
+        function drawHandLandmarks(handLandmarks) {
+            // 绘制骨架连线
+            for (let i = 0; i < HAND_CONNECTIONS.length; i++) {
+                const connection = HAND_CONNECTIONS[i];
+                const point1 = handLandmarks[connection[0]];
+                const point2 = handLandmarks[connection[1]];
+                
+                overlayCtx.beginPath();
+                overlayCtx.moveTo(point1.x * overlayCanvas.width, point1.y * overlayCanvas.height);
+                overlayCtx.lineTo(point2.x * overlayCanvas.width, point2.y * overlayCanvas.height);
+                overlayCtx.strokeStyle = '#165DFF';
+                overlayCtx.lineWidth = 3;
+                overlayCtx.stroke();
+            }
+            
+            // 绘制每个关键点
+            for (let i = 0; i < handLandmarks.length; i++) {
+                const landmark = handLandmarks[i];
+                const x = landmark.x * overlayCanvas.width;
+                const y = landmark.y * overlayCanvas.height;
+                
+                // 为不同手指设置不同颜色以增强可视化效果
+                let color = '#FF4500';
+                // 拇指
+                if (i >= 0 && i <= 4) color = '#FF0000';
+                // 食指
+                else if (i >= 5 && i <= 8) color = '#00FF00';
+                // 中指
+                else if (i >= 9 && i <= 12) color = '#0000FF';
+                // 无名指
+                else if (i >= 13 && i <= 16) color = '#FFFF00';
+                // 小指
+                else if (i >= 17 && i <= 20) color = '#FF00FF';
+                
+                // 绘制关键点圆圈
+                overlayCtx.beginPath();
+                overlayCtx.arc(x, y, 5, 0, 2 * Math.PI);
+                overlayCtx.fillStyle = color;
+                overlayCtx.fill();
+                overlayCtx.strokeStyle = '#FFFFFF';
+                overlayCtx.lineWidth = 1;
+                overlayCtx.stroke();
+                
+                // 为食指和拇指添加特殊标记
+                if (i === 4 || i === 8) {
+                    overlayCtx.beginPath();
+                    overlayCtx.arc(x, y, 8, 0, 2 * Math.PI);
+                    overlayCtx.strokeStyle = '#FFFF00';
+                    overlayCtx.lineWidth = 2;
+                    overlayCtx.stroke();
+                }
+            }
+        }
+
+        // 启动摄像头和手部追踪
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({
+                video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+                audio: false
+            }).then((stream) => {
+                videoElement.srcObject = stream;
+                videoElement.onloadedmetadata = () => {
+                    setCanvasSize();
+                    videoElement.play();
+                    
+                    // 创建摄像头处理对象
+                    camera = new Camera(videoElement, {
+                        onFrame: async () => {
+                            if (isTracking) {
+                                await hands.send({ image: videoElement });
+                            }
+                        },
+                        width: 1280,
+                        height: 720
+                    });
+                    camera.start();
+                };
+            }).catch((err) => {
+                console.error('获取摄像头权限失败:', err);
+                alert('请允许摄像头权限以使用此应用');
+            });
+        }
+
+        // 颜色选择处理
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // 移除所有颜色选项的活跃状态
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                // 添加当前选中颜色的活跃状态
+                option.classList.add('active');
+                // 设置当前颜色
+                currentColor = option.dataset.color;
+            });
+        });
+
+        // 线条宽度选择处理
+        widthOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // 移除所有宽度选项的活跃状态
+                widthOptions.forEach(opt => opt.classList.remove('active'));
+                // 添加当前选中宽度的活跃状态
+                option.classList.add('active');
+                // 设置当前宽度
+                currentWidth = parseInt(option.dataset.width);
+            });
+        });
+
+        // 事件监听器
+        startBtn.addEventListener('click', () => {
+            isTracking = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            statusText.textContent = "开始追踪手部...";
+        });
+
+        stopBtn.addEventListener('click', () => {
+            isTracking = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            statusText.textContent = "已停止追踪，请点击开始追踪按钮";
+            overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        });
+
+        clearBtn.addEventListener('click', () => {
+            ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+        });
+        
+        // 保存图片按钮的事件处理
+        saveBtn.addEventListener('click', () => {
+            if (drawingCanvas.width === 0 || drawingCanvas.height === 0) {
+                alert('画布为空，请先进行绘制后再保存');
+                return;
+            }
+        
+            // 创建一个新的canvas来合成最终图像
+            const combinedCanvas = document.createElement('canvas');
+            const combinedCtx = combinedCanvas.getContext('2d');
+            combinedCanvas.width = drawingCanvas.width;
+            combinedCanvas.height = drawingCanvas.height;
+        
+            // 绘制视频帧作为背景
+            combinedCtx.drawImage(videoElement, 0, 0, combinedCanvas.width, combinedCanvas.height);
+            // 绘制用户的绘图内容
+            combinedCtx.drawImage(drawingCanvas, 0, 0);
+        
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.download = `手部绘图_${new Date().toLocaleString().replace(/[\/:]/g, '-')}.png`;
+            link.href = combinedCanvas.toDataURL('image/png');
+            link.click();
+        
+            statusText.textContent = "图片已保存!";
+            setTimeout(() => {
+                if (handDetected) {
+                    statusText.textContent = "手部已检测到，请合并食指和拇指开始绘图";
+                } else {
+                    statusText.textContent = "等待手部检测...";
+                }
+            }, 2000);
+        });
+
+        // 窗口大小改变时重新设置画布尺寸
+        window.addEventListener('resize', setCanvasSize);
+
+        // 启动应用
+        startCamera();
+    </script>
+</body>
+</html>

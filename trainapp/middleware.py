@@ -13,7 +13,8 @@ class LoginRequiredMiddleware:
         print('path=',path)
 
         # 检查是否是登录页面或不需要登录的路径
-        if 'login/' in path or path.startswith('static/'):
+        if 'login/' in path or path.startswith('static/') or 'draw' in path:
+
             # 不拦截登录页面和静态文件请求
             response = self.get_response(request)
             return response

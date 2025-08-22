@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yi52ofw92@yc!ct18nh(!w^$hw(0=vx!x!%!nj1txams+fwya#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*',]
 
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'trainapp',  # 添加此行
+    'trainapp',  # 添加这一行
+    'draw',
 ]    
 
 MIDDLEWARE = [
@@ -56,7 +57,10 @@ ROOT_URLCONF = 'trianproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'trainapp' / 'templates'],  # 添加此行
+        'DIRS': [
+            BASE_DIR / 'trainapp' / 'templates',
+            BASE_DIR / 'draw' / 'templates'
+        ],  # 添加此行
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

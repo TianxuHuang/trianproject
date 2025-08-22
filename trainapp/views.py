@@ -26,12 +26,26 @@ def train_form(request):
         if form.is_valid():
             # 训练模型
             yolo_version = form.cleaned_data['yolo_version']
+            if yolo_version == 'none':
+                context={
+                    'error_message':'请选择训练的模型。'
+                }                           
+                return render(request, 'trainapp/error.html', context)
             # 训练模型大小
             model_size = form.cleaned_data['model_size']
             # 显卡的数量
             display_option = form.cleaned_data['display_option']
             # 数据集的名称
             dataset_name = form.cleaned_data['dataset_name']
+            if dataset_name == 'none':
+                print('请选择数据集')
+                context={
+                    'error_message':'请选择数据集。'
+                }                           
+                return render(request, 'trainapp/error.html', context)     
+
+
+
             #训练的轮数
             epochs = form.cleaned_data['epochs']
             #模型绝对路径和文件名

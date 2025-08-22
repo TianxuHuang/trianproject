@@ -1,9 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include  # 添加include导入
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('train/', include(('trainapp.urls','trainapp'),namespace='trainapp')),  # 添加这行配置
-
-
+    path('train/', include(('trainapp.urls','trainapp'),namespace='trainapp')),
+    path('draw/', include(('draw.urls','draw'),namespace='draw')),  # 添加这一行
 ]
